@@ -1,0 +1,2 @@
+# mpi
+notes on mpi
