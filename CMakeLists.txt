@@ -9,6 +9,7 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
 # List all Fortran source files
 set(SOURCES
+    ${SRC_DIR}/par_play.f90    
     ${SRC_DIR}/MOD_mpi.f90
     ${SRC_DIR}/test_driver.f90
 )
