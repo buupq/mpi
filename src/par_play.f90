@@ -68,6 +68,53 @@ subroutine mpi_scatter_collective()
 end subroutine mpi_scatter_collective
 
 
+!!!!!!
+
+subroutine mpi_non_blocking_comm()
+    use mpi
+    use mpi_wrapper,only: &
+        ierr, &
+        master, me, nprocs
+    
+    implicit none
+
+    integer :: status(MPI_STATUS_SIZE)
+    integer :: i, request
+    double precision :: isend, irecv
+
+
+    if (master) then
+        do i=1,nprocs-1
+            isend=real(i/10.0)
+            call MPI_Isend(isend, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, request, ierr)
+            call MPI_Wait(request, status, ierr)
+        enddo
+    else
+        ! MPI_IRECV (buf,count,datatype,source,tag,comm,request,ierr)
+        call MPI_Irecv(irecv, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, request, ierr)
+        call MPI_Wait(request, status, ierr)
+        write(*,*) "Rank ", me, " receives ", irecv
+    endif
+
+
+end subroutine mpi_non_blocking_comm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

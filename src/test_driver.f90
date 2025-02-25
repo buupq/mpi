@@ -16,8 +16,11 @@ program test_driver
     ! ! testing point to point blocking mpi communication
     ! call mpi_blocking_point_to_point()
 
-    ! testing collective mpi communication
-    call mpi_scatter_collective()
+    ! ! testing collective mpi communication
+    ! call mpi_scatter_collective()
+
+    ! testing non blocking mpi comm
+    call mpi_non_blocking_comm()
 
     ! ----- end ----- !
     call end_mpi()
