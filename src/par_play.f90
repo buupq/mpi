@@ -29,3 +29,52 @@ subroutine mpi_blocking_point_to_point()
         call MPI_Send(isend, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, ierr)
     endif
 end subroutine mpi_blocking_point_to_point
+
+!!!!!!
+subroutine mpi_scatter_collective()
+    use mpi
+    use mpi_wrapper,only: &
+        ierr, &
+        master, me, nprocs
+
+    implicit none
+    
+    integer,parameter :: N=10
+    double precision,allocatable :: AA(:,:), A(:)
+    double precision :: val
+    integer :: i,j
+
+! ------ start ------ !
+
+    allocate(A(N))
+
+    if (master) then
+        allocate(AA(N,nprocs))
+        do i=1,nprocs
+            do j=1,N
+                val = real((i-1)/10.0)
+                AA(j,i) = val
+            enddo
+        enddo
+    endif
+
+    ! scatter values
+    call MPI_Scatter(AA, N, MPI_DOUBLE, A, N, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierr)
+
+    ! write array A
+    write(*,'(A5,I2,/,10F10.3)') "from ", me, A
+
+
+end subroutine mpi_scatter_collective
+
+
+
+
+
+
+
+
+
+
+
+
